@@ -19,7 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "seven_segment_led.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -89,7 +89,7 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -243,7 +243,36 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+int counter = 50;
+enum segment{SEVEN_SEGMENT_1, SEVEN_SEGMENT_2};
+enum segment segmentState = SEVEN_SEGMENT_1;
 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	counter --;
+	switch(segmentState){
+	case SEVEN_SEGMENT_1:
+		HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
+		display7Seg(1);
+		if(counter <= 0){
+			counter = 50;
+			segmentState = SEVEN_SEGMENT_2;
+			HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+		}
+		break;
+	case SEVEN_SEGMENT_2:
+		HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_RESET);
+		display7Seg(2);
+		if(counter <= 0){
+			counter = 50;
+			segmentState = SEVEN_SEGMENT_1;
+			HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+		}
+		break;
+	}
+
+}
 /* USER CODE END 4 */
 
 /**
