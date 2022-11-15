@@ -39,7 +39,6 @@
 #define DURATION_2HZ	50
 #define TIMER_CYCLE 	10
 #define DELAY_TIME		1000
-#define MAX_LED 		4
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/

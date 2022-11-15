@@ -7,6 +7,9 @@
 
 #include "main.h"
 #include "seven_segment_led.h"
+extern int hour;
+extern int minute;
+extern int second;
 
 extern int led_buffer[4];
 void display7Seg(int num){
@@ -147,4 +150,11 @@ void update7SEG(int index){
 		break;
 	}
 	display7Seg(led_buffer[index]);
+}
+
+void updateClockBuffer(){
+	led_buffer[0] = hour/10;
+	led_buffer[1] = hour%10;
+	led_buffer[2] = minute/10;
+	led_buffer[3] = minute%10;
 }

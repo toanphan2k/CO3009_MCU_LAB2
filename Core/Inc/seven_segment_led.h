@@ -12,5 +12,5 @@
 
 void display7Seg(int num);
 void update7SEG(int index);
-
+void updateClockBuffer();
 #endif /* INC_SEVEN_SEGMENT_LED_H_ */
