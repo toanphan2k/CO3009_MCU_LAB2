@@ -1,2 +1,5 @@
-seven_segment_led.c:12:6:display7Seg	16	static
-seven_segment_led.c:116:6:update7SEG	16	static
+seven_segment_led.c:17:6:display7Seg	16	static
+seven_segment_led.c:121:6:update7SEG	16	static
+seven_segment_led.c:157:6:updateClockBuffer	4	static
+seven_segment_led.c:164:6:clock	8	static
+seven_segment_led.c:180:6:change7Segment	8	static

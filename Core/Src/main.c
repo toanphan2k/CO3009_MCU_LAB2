@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "seven_segment_led.h"
+#include "software_timer.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -51,7 +52,21 @@ TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
 int led_buffer[4] = {4, 3, 2, 1};
-int index_led = 0;
+int segment_index = 0;
+
+int timer0_flag = 0;
+int timer1_flag = 0;
+int timer2_flag = 0;
+int timer3_flag = 0;
+
+int timer0_counter = 0;
+int timer1_counter = 0;
+int timer2_counter = 0;
+int timer3_counter = 0;
+
+int hour = 15;
+int minute = 8;
+int second = 50;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,11 +117,34 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  setTimer0(1000);
+  setTimer1(1000);
+  setTimer2(1000);
+  setTimer3(1000);
   while (1)
   {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
+	  /* USER CODE END WHILE */\
+	  // DOT PIN BLink every 1 second
+	  if(timer0_flag == 1){
+		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+		  setTimer0(1000);
+	  }
+	  // RED LED BLink every 0.5 second
+	  if(timer1_flag == 1){
+		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+		  setTimer1(500);
+	  }
+	  // Clock value increase every second
+	  if(timer2_flag == 1){
+		  clock();
+		  setTimer2(1000);
+	  }
+	  // Segment Scanning with frequency of 4Hz
+	  if(timer3_flag == 1){
+		  change7Segment();
+		  setTimer3(250);
+	  }
+	  /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
@@ -252,24 +290,7 @@ enum segment{SEVEN_SEGMENT_1, SEVEN_SEGMENT_2, SEVEN_SEGMENT_3, SEVEN_SEGMENT_4}
 enum segment segmentState = SEVEN_SEGMENT_1;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	counter --;
-	counter_red_led --;
-	counter_dot --;
-	if(counter <= 0) {
-		update7SEG(index_led);
-		index_led ++;
-		counter = DURATION_4HZ;
-	}
-	if(index_led >= MAX_LED) index_led = 0;
-	update7SEG(index_led);
-	if(counter_red_led == 0){
-		counter_red_led = DURATION_2HZ;
-		HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
-	}
-	if(counter_dot == 0){
-		counter_dot = DURATION_1HZ;
-		HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-	}
+	timer_run();
 }
 /* USER CODE END 4 */
 
