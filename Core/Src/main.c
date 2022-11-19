@@ -21,6 +21,7 @@
 #include "main.h"
 #include "seven_segment_led.h"
 #include "software_timer.h"
+#include "matrix8x8.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -58,15 +59,25 @@ int timer0_flag = 0;
 int timer1_flag = 0;
 int timer2_flag = 0;
 int timer3_flag = 0;
+int timer4_flag = 0;
+int timer5_flag = 0;
 
 int timer0_counter = 0;
 int timer1_counter = 0;
 int timer2_counter = 0;
 int timer3_counter = 0;
+int timer4_counter = 0;
+int timer5_counter = 0;
 
 int hour = 15;
 int minute = 8;
 int second = 50;
+
+uint8_t matrix_buffer[8] = {0xe7,0xdb,0xbd,0xbd,0x81,0xbd,0xbd,0xbd};
+//uint8_t matrix_buffer[8] = {0x99,0x00,0x00,0x00,0x81,0xc3,0xe7,0xff};
+int index_led_matrix = 0;
+int shifting_index = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,6 +132,8 @@ int main(void)
   setTimer1(1000);
   setTimer2(1000);
   setTimer3(1000);
+  setTimer4(1000);
+  setTimer5(1000);
   while (1)
   {
 	  /* USER CODE END WHILE */\
@@ -143,6 +156,20 @@ int main(void)
 	  if(timer3_flag == 1){
 		  change7Segment();
 		  setTimer3(250);
+	  }
+	  if(timer4_flag == 1){
+		  shifting_index ++;
+		  if(shifting_index >= MAX_LED_MATRIX) {
+			  shifting_index = 0;
+		  }
+		  setTimer4(200);
+	  }
+
+	  if(timer5_flag == 1){
+		  index_led_matrix ++;
+		  if(index_led_matrix >= MAX_LED_MATRIX) index_led_matrix = 0;
+		  setTimer5(10);
+		  updateLEDMatrix(index_led_matrix);
 	  }
 	  /* USER CODE BEGIN 3 */
   }

@@ -1,0 +1,5 @@
+matrix8x8.c:11:6:shiftingLedMatrixVeritcally	16	static
+matrix8x8.c:36:6:updateLEDMatrix	16	static
+matrix8x8.c:69:6:writeLEDMatrixRow	16	static
+matrix8x8.c:80:6:clearLEDMatrixCol	8	static
+matrix8x8.c:85:6:clearLEDMatrixRow	8	static
