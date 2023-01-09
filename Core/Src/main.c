@@ -66,7 +66,7 @@ int timer3_counter = 0;
 
 int hour = 15;
 int minute = 8;
-int second = 50;
+int second = 55;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
